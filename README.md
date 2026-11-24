@@ -13,14 +13,14 @@ Al primo avvio apri ⚙︎ e inserisci la chiave Gemini (gratis su <https://aist
 
 ## Pubblicazione (una volta sola)
 
-1. Su GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-2. **Actions → Pubblica su GitHub Pages → Run workflow** (oppure basta un nuovo commit su `main`).
-3. L'app sarà su `https://<utente>.github.io/recapp/`.
+1. Su GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch**.
+2. **Branch: `main`**, cartella **`/docs`** → **Save**.
+3. Dopo circa un minuto l'app è su `https://<utente>.github.io/recapp/`. Ogni nuovo commit su `main` la aggiorna da solo.
 
 ## Struttura
 
 ```
-app/
+docs/            (la cartella pubblicata da GitHub Pages)
   index.html, styles.css   interfaccia
   app.js                   logica: acquisizione, coda, riepilogo, UI
   ai.js                    chiamate a Gemini / Groq, prompt e schemi JSON
@@ -29,7 +29,7 @@ app/
   manifest.webmanifest     installazione e share target
 ```
 
-Nessuna build: sono file statici. Per provarla in locale: `cd app && python3 -m http.server 8080`.
+Nessuna build: sono file statici. Per provarla in locale: `cd docs && python3 -m http.server 8080`.
 
 ## Limiti noti
 
