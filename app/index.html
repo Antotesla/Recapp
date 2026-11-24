@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Recapp</title>
+  <meta name="description" content="Trascrive e riassume i vocali WhatsApp in punti chiave e cose da fare.">
+  <meta name="theme-color" content="#11131a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Recapp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Recapp</h1>
+    <div id="status" class="status" aria-live="polite"></div>
+    <button id="btn-settings" class="icon-btn" aria-label="Impostazioni">⚙︎</button>
+  </header>
+
+  <main>
+    <section id="onboarding" class="card onboarding" hidden></section>
+
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Cerca nei vocali…" autocomplete="off">
+      <label class="btn primary" for="file-input">＋ Vocali</label>
+      <input id="file-input" type="file" accept="audio/*,.opus,.ogg,.m4a,.mp3,.wav,.aac" multiple hidden>
+    </div>
+
+    <nav id="daynav" class="daynav">
+      <button id="day-prev" class="icon-btn" aria-label="Giorno precedente">‹</button>
+      <button id="day-label" class="day-label"></button>
+      <button id="day-next" class="icon-btn" aria-label="Giorno successivo">›</button>
+    </nav>
+
+    <section id="digest"></section>
+    <h2 id="notes-title" class="section-title"></h2>
+    <section id="notes" class="notes"></section>
+  </main>
+
+  <dialog id="settings">
+    <form method="dialog" id="settings-form">
+      <h2>Impostazioni</h2>
+
+      <fieldset>
+        <legend>Google Gemini (principale, gratuito)</legend>
+        <label>Chiave API
+          <input name="geminiKey" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…">
+        </label>
+        <p class="hint">Si crea gratis su <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> → “Create API key”.</p>
+        <label>Modello
+          <input name="geminiModel" list="gemini-models" autocomplete="off" spellcheck="false">
+          <datalist id="gemini-models"></datalist>
+        </label>
+        <button type="button" id="btn-models" class="btn">Verifica chiave e carica modelli</button>
+        <p class="hint" id="models-status"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Groq (riserva, facoltativo)</legend>
+        <label>Chiave API
+          <input name="groqKey" type="password" autocomplete="off" spellcheck="false" placeholder="gsk_…">
+        </label>
+        <p class="hint">Usato solo se Gemini non risponde o ha finito il limite gratuito. Chiave gratis su <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>.</p>
+        <label>Modello trascrizione <input name="groqWhisper" autocomplete="off" spellcheck="false"></label>
+        <label>Modello riassunto <input name="groqChat" autocomplete="off" spellcheck="false"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Il tuo lavoro</legend>
+        <label>Contesto per capire cosa è importante
+          <textarea name="context" rows="4" placeholder="Es.: Sono il responsabile acquisti. Seguo i fornitori X e Y e il cantiere di via Roma. Mi interessano scadenze, ordini e appuntamenti."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Comportamento</legend>
+        <label class="check"><input name="autoDigest" type="checkbox"> Aggiorna da solo il riepilogo del giorno dopo ogni elaborazione</label>
+        <label>Conserva l’audio per (giorni)
+          <input name="keepAudioDays" type="number" min="1" max="365" inputmode="numeric">
+        </label>
+        <p class="hint">Dopo questo periodo l’audio viene cancellato per liberare spazio; trascrizioni e riassunti restano.</p>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button value="cancel" class="btn">Annulla</button>
+        <button value="save" class="btn primary">Salva</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
